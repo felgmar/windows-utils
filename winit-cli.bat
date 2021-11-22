@@ -1,5 +1,6 @@
 @echo off
 setlocal
+chcp 65001
 set version=v20211021
 color a
 title Windows CLI Installer Tool - %version%
@@ -35,7 +36,7 @@ set err_disk_not_found=:: ERROR: Could not find disk %disk%, make sure it exists
 set chck_lang=:: INFO: Check the language selected is the right one.
 set part_disk_wait=:: Partitioning disk %disk%, please wait . . .
 set err_on_part=:: ERROR: Something ocurred during partitioning
-set whr_is_iso_mnt_at=:: Specify the drive where the ISO is mounted at (e.g. Z:\): 
+set iso_mnt_location=:: Specify the drive where the ISO is mounted at (e.g. Z:\): 
 set err_esd_not_found=:: WARNING: Windows installation file "install.esd" not found, retrying with "install.wim"...
 set err_valid_install_file_found=:: ERROR: No valid Windows installation file was found, make sure the ISO is mounted and the source drive "%source_drive%" is correct.
 set sel_win_edition=:: Select the Windows edition you want to install: 
@@ -50,11 +51,11 @@ set err_disk_not_found=:: ERROR: No se pudo encontrar el disco %disk%, comprueba
 set chck_lang=:: INFO: Comprueba que el idioma seleccionado es el correcto.
 set part_disk_wait=:: Particionando disco %disk%, por favor espera . . .
 set err_on_part=:: ERROR: Ha ocurrido algo durante el particionado
-set whr_is_iso_mnt_at=:: Especifica la unidad en la que se encuentra la ISO montada (ej. Z:\): 
-set err_esd_not_found=:: AVISO: Archivo de instalación de Windows "install.esd" no encontrado, probando con "install.wim"...
-set err_no_valid_installation_file_found=:: ERROR: No se ha encontrado un archivo para instalar Windows, comprueba que la ISO se encuentra montada y el dispositivo de origen "%source_drive%" es correcto.
-set sel_win_edition=:: Selecciona la edicion de Windows que quieres instalar: 
-set installation_ended=:: Windows se ha installado, reinicia y elige arrancar desde:: Windows is now installed, reboot and choose to boot from "%disk%" to start using it.
+set iso_mnt_location=:: Especifica la unidad en la que se encuentra la ISO montada (ej. Z:\): 
+set err_esd_not_found=:: AVISO: El archivo de instalación de Windows "install.esd" no se ha encontrado, probando con "install.wim"...
+set err_no_valid_installation_file_found=:: ERROR: No se ha encontrado un archivo de instalación de Windows válido, comprueba que la ISO está montada y el dispositivo de origen "%source_drive%" es correcto.
+set sel_win_edition=:: Selecciona la edición de Windows que quieres instalar: 
+set installation_ended=:: Windows ahora está instalado, reinicia y elige arrancar desde el disco "%disk%" para empezar a usarlo.
 goto check_permissions
 
 :check_permissions
@@ -150,7 +151,7 @@ if errorlevel 1 (
 cls
 echo.Windows CLI Installer Tool - %version%
 echo.
-set /p source_drive="%whr_is_iso_mnt_at%"
+set /p source_drive="%iso_mnt_location%"
 
 if exist %source_drive%\sources\install.esd (
     dism /get-imageinfo /imagefile:%source_drive%\sources\install.esd
@@ -184,10 +185,16 @@ goto install_boot_files
 echo.
 bcdboot j:\windows /s i: /f UEFI /v
 pause >nul 2>&1
-goto install_finished
+
+if errorlevel 1 (
+    echo.An error ocurred
+) else (
+    goto install_finished
+)
 
 :install_finished
 cls
 echo.%installation_ended%
 pause >nul 2>&1
 exit
+
