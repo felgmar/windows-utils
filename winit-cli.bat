@@ -68,8 +68,7 @@ net session >nul 2>&1
 if %errorlevel% == 0 (
     if %lang% == 1 (
         goto main_en
-    ) else if (
-        %lang% == 2 (
+    ) else if %lang% == 2 (
             goto main_es
         )
     )
