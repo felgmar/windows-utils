@@ -1,7 +1,7 @@
 @echo off
 setlocal
 chcp 65001
-set version=v20211021
+set version=v20211212
 color a
 title Windows CLI Installer Tool - %version%
 
@@ -9,21 +9,24 @@ title Windows CLI Installer Tool - %version%
 cls
 echo.Windows CLI Installer Tool - %version%
 echo.
-echo.PLEASE CHOOSE A LANGUAGE
-echo.
-echo.  Available languages:
-echo.    1. English
-echo.    2. Spanish
-echo.
-echo.    0. Quit              
+echo.============ MAIN MENU ============
+echo.=                                 =
+echo.=   Available languages           =
+echo.=                                 =
+echo.=      1) English                 =
+echo.=      2) Spanish                 =
+echo.=                                 =
+echo.=      0) Quit                    =
+echo.=                                 =
+echo.===================================
 echo.
 set lang=
-set /p lang=Choose your language: 
+set /p lang=:: Choose your language: 
 if /i '%lang%'=='1' goto set_lang_vars_en
 if /i '%lang%'=='2' goto set_lang_vars_es
 if /i '%lang%'=='0' exit
 echo.
-echo.ERROR: '%lang%': Invalid or unknown language. Try again.
+echo.:: ERROR: '%lang%': Invalid or unknown language. Try again.
 pause >nul 2>&1
 cls
 goto choose_language
@@ -51,7 +54,7 @@ set err_disk_not_found=:: ERROR: No se pudo encontrar el disco %disk%, comprueba
 set chck_lang=:: INFO: Comprueba que el idioma seleccionado es el correcto.
 set part_disk_wait=:: Particionando disco %disk%, por favor espera . . .
 set err_on_part=:: ERROR: Ha ocurrido algo durante el particionado
-set iso_mnt_location=:: Especifica la unidad en la que se encuentra la ISO montada (ej. Z:\): 
+set iso_mnt_location=:: Especifica la unidad en la que se encuentra la ISO montada (por ejemplo: Z:\): 
 set err_esd_not_found=:: AVISO: El archivo de instalación de Windows "install.esd" no se ha encontrado, probando con "install.wim"...
 set err_no_valid_installation_file_found=:: ERROR: No se ha encontrado un archivo de instalación de Windows válido, comprueba que la ISO está montada y el dispositivo de origen "%source_drive%" es correcto.
 set sel_win_edition=:: Selecciona la edición de Windows que quieres instalar: 
@@ -73,7 +76,7 @@ if %errorlevel% == 0 (
         )
     )
 ) else (
-    echo.
+    cls
     echo.%err_no_admin_perms%
     timeout /t 10 /nobreak
     exit 1
@@ -102,7 +105,7 @@ if errorlevel 1 (
 echo.
 echo.
 set disk=
-set /p disk=:: Especifica un dispositivo para formatearlo: 
+set /p disk=:: Especifica el número del disco para formatearlo: 
 
 (echo list disk) | diskpart | %find_disk% >nul 2>&1
 
@@ -127,11 +130,9 @@ echo.%part_disk_wait%
     echo clean
     echo convert gpt
     echo create partition efi size=100
-    echo select partition 2
     echo format fs=fat32 quick
     echo assign letter i
     echo create partition primary
-    echo select partition 4
     echo format fs=ntfs quick
     echo assign letter j
 ) | diskpart >nul 2>&1
@@ -196,4 +197,3 @@ cls
 echo.%installation_ended%
 pause >nul 2>&1
 exit
-
