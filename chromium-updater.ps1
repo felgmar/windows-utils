@@ -1,6 +1,6 @@
 ﻿#
-# Created by Liam Powell (gfelipe099)
-# Chromium updater tool
+# Created by Ken Hoo (mrkenhoo)
+# Chromium Update Tool
 # chromium-updater.ps1 file
 #
 Add-Type -AssemblyName System.IO.Compression.FileSystem
@@ -13,7 +13,7 @@ Add-Type -AssemblyName System.Windows.Forms
             Start-Process PowerShell.exe -ArgumentList ("-NoProfile -ExecutionPolicy Bypass -File `"{0}`"" -f $PSCommandPath) -Verb RunAs
         }
         No {
-                Write-Error "This script needs Administrator privileges to work, try again."
+                Write-Error "This script needs administrator privileges to work, try again."
                 Start-Sleep 5
                 Exit
         }
@@ -22,7 +22,7 @@ Add-Type -AssemblyName System.Windows.Forms
 
 $programName = 'Chromium'
 $zipFile = 'chrome-win.zip'
-$installDir = "$env:ProgramFiles/The Chromium Project/Chromium"
+$installDir = "$env:ProgramFiles/The Chromium Project"
 
 function unzipFile {
     #
@@ -39,7 +39,6 @@ if (-not(Test-Path -Path $zipFile -PathType Leaf)) {
         Invoke-WebRequest -Uri https://download-chromium.appspot.com/dl/Win_x64?type=snapshots -OutFile $env:TEMP/$zipFile -UseBasicParsing -ErrorAction Stop | Out-Null
         if (Test-Path -Path $env:TEMP/$zipFile -PathType Leaf) {
             Write-Host "'$programName' was downloaded successfully"
-            Write-Host ""
             Write-Progress "Extracting '$programName' to '$installDir'..."
             unzipFile "$env:TEMP/$zipFile" "$installDir"
             if (Test-Path -Path "$installDir" -PathType Leaf) {
