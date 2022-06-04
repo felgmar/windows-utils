@@ -4,6 +4,8 @@
 
 if (${bootupState} -ne "Fail-safe boot") {
     Write-Error "The system is required to be running in safe-mode to execute this script."
+    Write-Host -NoNewLine 'Press any key to continue...';
+    $null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
     Exit 1
 }
 
