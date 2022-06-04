@@ -98,3 +98,6 @@ function installChromium
 deleteChromium
 downloadChromium
 installChromium
+
+Write-Host -NoNewLine 'Press any key to continue...';
+$null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');

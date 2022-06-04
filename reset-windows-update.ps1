@@ -66,3 +66,6 @@ net start bits
 net start wuauserv
 net start appidsvc
 net start cryptsvc
+
+Write-Host -NoNewLine 'Press any key to continue...';
+$null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
