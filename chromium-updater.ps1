@@ -95,7 +95,7 @@ function installChromium
     {
         Write-Progress "Extracting ${programName} to ${installDir}..."
 
-        UnzipFile "${env:TEMP}\${zipFile}" "${installDir}"
+        UnzipFile -SourceFile "${env:TEMP}\${zipFile}" -DestinationPath "${installDir}"
 
         try
         {
