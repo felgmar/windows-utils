@@ -4,7 +4,6 @@
 # chromium-updater.ps1 file
 #
 
-#Requires -Modules CreateShortcut, UnzipFile
 #Requires -RunAsAdministrator
 
 ${programName} = 'Chromium'
@@ -13,7 +12,7 @@ ${installDir} = "$env:ProgramFiles\The Chromium Project"
 
 function deleteChromium
 {
-    if (Test-Path -Path "${installDir}")
+    if (Test-Path -Path "${installDir}\chrome-win")
     {
         try
         {
@@ -75,7 +74,7 @@ function downloadChromium
     else
     {
         $redownload = Read-Host -Prompt ":: The file ${zipFile} already exists, do you want to download it again?"
-        if ($redownload -eq "yes")
+        if ($redownload -eq "yes" -or "y")
         {
             Write-Host ":: Deleting file ${env:TEMP}\${zipfile}..."
             Remove-Item -LiteralPath "${env:TEMP}\${zipFile}" -Force -ErrorAction Stop | Out-Null
@@ -91,18 +90,19 @@ function downloadChromium
 
 function installChromium
 {
-    if (-not(Test-Path -Path "${installDir}"))
+    if (-not(Test-Path -Path "${installDir}\chrome-win"))
     {
+        downloadChromium
         Write-Progress "Extracting ${programName} to ${installDir}..."
 
-        UnzipFile -SourceFile "${env:TEMP}\${zipFile}" -DestinationPath "${installDir}"
+        .\Unzip-File.ps1 -SourceFile "${env:TEMP}\${zipFile}" -DestinationPath "${installDir}"
 
         try
         {
-            CreateShortcut -ProgramName ${programName} -ShortcutPath "${env:USERPROFILE}\Desktop\${programName}.lnk" -TargetPath "${installDir}\chrome-win\chrome.exe"
+            .\Create-Shortcut.ps1 -ProgramName ${programName} -ShortcutPath "${env:USERPROFILE}\Desktop\${programName}.lnk" -TargetPath "${installDir}\chrome-win\chrome.exe"
 
             Write-Host "${programName} has been installed at ${installDir}"
-            Write-Host "A shortcut of Chromium has been created at ${env:USERPROFILE}\Desktop"
+            Write-Host "A shortcut of Chromium has been created at ${env:USERPROFILE}\Desktop\${programName}.lnk"
             Start-Sleep 5
         }
         catch
@@ -122,9 +122,9 @@ function showMenu
 {
     param
     (
-        [string]$Title = "Chromium Updater"
+        [string] $Title = "Chromium Updater"
     )
-    $option = null
+    $option = "null"
     Clear-Host
     Write-Host ""
     Write-Host "================ $Title ================"
