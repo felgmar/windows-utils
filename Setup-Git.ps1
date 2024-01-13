@@ -20,7 +20,7 @@ process {
     Start-Process -FilePath "git" -ArgumentList ('config', '--global', 'gpg.format', "$GPGFormat", '--replace-all') -LoadUserProfile -NoNewWindow  -Wait
 
     if (Test-Path $SigningKey) {
-        Start-Process -FilePath "ssh-add" -ArgumentList ('$SigningKey') -LoadUserProfile -NoNewWindow -Wait
+        Start-Process -FilePath "ssh-add" -ArgumentList ("$SigningKey") -LoadUserProfile -NoNewWindow -Wait
     } else {
         Start-Process -FilePath "ssh-add" -LoadUserProfile -NoNewWindow -Wait
     }
