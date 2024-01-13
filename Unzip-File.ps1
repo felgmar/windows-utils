@@ -1,10 +1,10 @@
 [CmdletBinding()]
 param (
    [Parameter(Mandatory = $true)]
-   [String] $SourceFile,
+   [String]$SourceFile,
 
    [Parameter(Mandatory = $true)]
-   [String] $DestinationPath
+   [String]$DestinationPath
 )
 
 process {
