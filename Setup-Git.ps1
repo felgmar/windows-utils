@@ -1,23 +1,33 @@
 ﻿[CmdletBinding()]
 param (
    [Parameter(Mandatory = $true)]
-   [String] $Name,
+   [String]$Name,
 
    [Parameter(Mandatory = $true)]
-   [String] $Email,
+   [String]$Email,
 
    [Parameter(Mandatory = $false)]
-   [String] $SigningKey,
+   [String]$SigningKey,
 
    [Parameter(Mandatory = $true)]
    [ValidateSet('ssh')]
-   [String] $GPGFormat
+   [String]$GPGFormat,
+
+   [Parameter(Mandatory = $false)]
+   [Bool]$ReplaceAll
 )
 
 process {
-    Start-Process -FilePath "git" -ArgumentList ('config', '--global', 'user.name', "$Name", '--replace-all') -LoadUserProfile -NoNewWindow -Wait
-    Start-Process -FilePath "git" -ArgumentList ('config', '--global', 'user.email', "$Email", '--replace-all') -LoadUserProfile -NoNewWindow -Wait
-    Start-Process -FilePath "git" -ArgumentList ('config', '--global', 'gpg.format', "$GPGFormat", '--replace-all') -LoadUserProfile -NoNewWindow  -Wait
+    if ($ReplaceAll)
+    {
+        Start-Process -FilePath "git" -ArgumentList ('config', '--global', 'user.name', "$Name", '--replace-all') -LoadUserProfile -NoNewWindow -Wait
+        Start-Process -FilePath "git" -ArgumentList ('config', '--global', 'user.email', "$Email", '--replace-all') -LoadUserProfile -NoNewWindow -Wait
+        Start-Process -FilePath "git" -ArgumentList ('config', '--global', 'gpg.format', "$GPGFormat", '--replace-all') -LoadUserProfile -NoNewWindow  -Wait
+    } else {
+        Start-Process -FilePath "git" -ArgumentList ('config', '--global', 'user.name', "$Name") -LoadUserProfile -NoNewWindow -Wait
+        Start-Process -FilePath "git" -ArgumentList ('config', '--global', 'user.email', "$Email") -LoadUserProfile -NoNewWindow -Wait
+        Start-Process -FilePath "git" -ArgumentList ('config', '--global', 'gpg.format', "$GPGFormat") -LoadUserProfile -NoNewWindow  -Wait
+    }
 
     if (Test-Path $SigningKey) {
         Start-Process -FilePath "ssh-add" -ArgumentList ("$SigningKey") -LoadUserProfile -NoNewWindow -Wait
