@@ -6,7 +6,7 @@ param (
    [Parameter(Mandatory = $true)]
    [String]$Email,
 
-   [Parameter(Mandatory = $false)]
+   [Parameter(Mandatory = $true)]
    [String]$SigningKey,
 
    [Parameter(Mandatory = $true)]
@@ -27,9 +27,11 @@ process {
         Start-Process -FilePath "git" -ArgumentList ('config', '--global', 'user.name', "$Name") -LoadUserProfile -NoNewWindow -Wait
         Start-Process -FilePath "git" -ArgumentList ('config', '--global', 'user.email', "$Email") -LoadUserProfile -NoNewWindow -Wait
         Start-Process -FilePath "git" -ArgumentList ('config', '--global', 'gpg.format', "$GPGFormat") -LoadUserProfile -NoNewWindow  -Wait
+        user.signingkey
     }
 
     if (Test-Path $SigningKey) {
+        Start-Process -FilePath "git" -ArgumentList ('config', '--global', 'user.signingkey', "$SigningKey") -LoadUserProfile -NoNewWindow -Wait
         Start-Process -FilePath "ssh-add" -ArgumentList ("$SigningKey") -LoadUserProfile -NoNewWindow -Wait
     } else {
         Start-Process -FilePath "ssh-add" -LoadUserProfile -NoNewWindow -Wait
