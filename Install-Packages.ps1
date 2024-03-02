@@ -28,7 +28,8 @@ process {
             "Telegram.TelegramDesktop",
             "Microsoft.VisualStudioCode",
             "ElectronicArts.EADesktop",
-            "Klocman.BulkCrapUninstaller"
+            "Klocman.BulkCrapUninstaller",
+	    "GnuPG.Gpg4win"
         )
 
         foreach ($package in $UWPPackages) {
