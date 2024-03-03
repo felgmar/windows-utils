@@ -8,11 +8,12 @@ process {
     if (-not($Package))
     {
         $UWPPackages = @(
-            "9MZ1SNWT0N5D",   # PowerShell
-            "9NCVDN91XZQP",   # Python 3.12
-            "9NCBCSZSJRSB",   # Spotify
-            "9NKSQGP7F2NH",   # WhatsApp
-            "XP89DCGQ3K6VLD"  # PowerToys
+            "9MZ1SNWT0N5D",    # PowerShell
+            "9NCVDN91XZQP",    # Python 3.12
+            "9NCBCSZSJRSB",    # Spotify
+            "9NKSQGP7F2NH",    # WhatsApp
+            "XP89DCGQ3K6VLD",  # PowerToys
+            "9NBLGGH0L44H"     # Wallhaven.cc
         )
 
         $PackagesList = @(
@@ -29,7 +30,7 @@ process {
             "Microsoft.VisualStudioCode",
             "ElectronicArts.EADesktop",
             "Klocman.BulkCrapUninstaller",
-	    "GnuPG.Gpg4win"
+	        "GnuPG.Gpg4win"
         )
 
         foreach ($package in $UWPPackages) {
