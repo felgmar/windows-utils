@@ -30,7 +30,8 @@ process {
             "Microsoft.VisualStudioCode",
             "ElectronicArts.EADesktop",
             "Klocman.BulkCrapUninstaller",
-	        "GnuPG.Gpg4win"
+            "GnuPG.Gpg4win",
+            "voidtools.Everything.Lite"
         )
 
         foreach ($package in $UWPPackages) {
