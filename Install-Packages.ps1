@@ -22,7 +22,6 @@ process {
             "Microsoft.VisualStudioCode",
             "ElectronicArts.EADesktop",
             "Klocman.BulkCrapUninstaller",
-            "GnuPG.GnuPG",
             "voidtools.Everything.Lite",
             "Telegram.TelegramDesktop",
             "Google.GoogleDrive",
