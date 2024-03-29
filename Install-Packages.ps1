@@ -9,7 +9,6 @@ process {
     {
         $PackagesList = @(
             "twpayne.chezmoi",
-            "Bitwarden.Bitwarden",
             "GitHub.GitHubDesktop",
             "GitHub.cli",
             "Git.Git",
