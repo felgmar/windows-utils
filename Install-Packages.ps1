@@ -20,6 +20,7 @@ process {
             "Telegram.TelegramDesktop",
             "Microsoft.VisualStudioCode",
             "ElectronicArts.EADesktop",
+            "KeePassXCTeam.KeePassXC",
             "Klocman.BulkCrapUninstaller",
             "voidtools.Everything.Lite",
             "Telegram.TelegramDesktop",
