@@ -32,5 +32,8 @@ process {
             Write-Host "Installing package: $package"
             Start-Process -FilePath "winget.exe" -ArgumentList ("install", "--exact", "--id", $package) -NoNewWindow -Wait
         }
+    } else {
+        Write-Host "Installing package: $Package"
+        Start-Process -FilePath "winget.exe" -ArgumentList ("install", "--exact", "--id", $Package) -NoNewWindow -Wait
     }
 }
