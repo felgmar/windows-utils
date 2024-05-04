@@ -23,9 +23,10 @@ process {
             "KeePassXCTeam.KeePassXC",
             "Klocman.BulkCrapUninstaller",
             "voidtools.Everything.Lite",
-            "Telegram.TelegramDesktop",
             "Google.GoogleDrive",
+            "Google.Chrome",
             "Spotify.Spotify"
+            "PPSSPPTeam.PPSSPP"
         )
 
         foreach ($package in $PackagesList) {
