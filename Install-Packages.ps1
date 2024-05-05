@@ -26,7 +26,9 @@ process {
             "Google.GoogleDrive",
             "Google.Chrome",
             "Spotify.Spotify"
-            "PPSSPPTeam.PPSSPP"
+            "PPSSPPTeam.PPSSPP",
+            "Neovim.Neovim",
+            "ShareX.ShareX"
         )
 
         foreach ($package in $PackagesList) {
