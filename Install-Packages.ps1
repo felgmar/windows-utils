@@ -24,11 +24,15 @@ process {
             "Klocman.BulkCrapUninstaller",
             "voidtools.Everything.Lite",
             "Google.GoogleDrive",
-            "Google.Chrome",
+            "Mozilla.Firefox",
             "Spotify.Spotify"
             "PPSSPPTeam.PPSSPP",
             "Neovim.Neovim",
-            "ShareX.ShareX"
+            "ShareX.ShareX",
+            "GIMP.GIMP",
+            "9N0DX20HK701", # Windows Terminal
+            "Telegram.TelegramDesktop",
+            "Microsoft.PowerToys"
         )
 
         foreach ($package in $PackagesList) {
