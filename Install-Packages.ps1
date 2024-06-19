@@ -8,7 +8,6 @@ process {
     if (-not($Package))
     {
         $PackagesList = @(
-            "twpayne.chezmoi",
             "GitHub.GitHubDesktop",
             "GitHub.cli",
             "Git.Git",
