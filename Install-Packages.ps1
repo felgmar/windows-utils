@@ -29,7 +29,6 @@ process {
             "Neovim.Neovim",
             "ShareX.ShareX",
             "GIMP.GIMP",
-            "9N0DX20HK701", # Windows Terminal
             "Telegram.TelegramDesktop",
             "Microsoft.PowerToys"
         )
