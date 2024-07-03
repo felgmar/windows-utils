@@ -8,6 +8,7 @@ process {
     if (-not($Package))
     {
         $PackagesList = @(
+            "Bitwarden.Bitwarden",
             "GitHub.GitHubDesktop",
             "GitHub.cli",
             "Git.Git",
