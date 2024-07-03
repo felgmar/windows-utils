@@ -22,7 +22,7 @@ process {
             "Klocman.BulkCrapUninstaller",
             "voidtools.Everything.Lite",
             "Google.GoogleDrive",
-            "Mozilla.Firefox",
+            "Google.Chrome",
             "Spotify.Spotify"
             "PPSSPPTeam.PPSSPP",
             "Neovim.Neovim",
