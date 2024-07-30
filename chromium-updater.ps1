@@ -4,8 +4,6 @@
 # chromium-updater.ps1 file
 #
 
-#Requires -RunAsAdministrator
-
 ${ScriptVersion} = "1.0.1"
 ${programName} = 'Chromium'
 ${zipFile} = 'chrome-win.zip'
@@ -147,7 +145,6 @@ function showMenu
     (
         [string]$Title = "Chromium Updater - v$ScriptVersion"
     )
-    $option = "null"
     Write-Host "================ $Title ================"
     Write-Host ""
     Write-Host "  > Type '1' to install Chromium"
