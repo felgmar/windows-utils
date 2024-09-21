@@ -22,6 +22,8 @@ process {
             "ElectronicArts.EADesktop",
             "Klocman.BulkCrapUninstaller",
             "voidtools.Everything.Lite",
+            "Nextcloud.NextcloudDesktop",
+            "Mozilla.Firefox",
             "Spotify.Spotify"
             "PPSSPPTeam.PPSSPP",
             "Neovim.Neovim",
