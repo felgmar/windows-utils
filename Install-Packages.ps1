@@ -22,13 +22,10 @@ process {
             "ElectronicArts.EADesktop",
             "Klocman.BulkCrapUninstaller",
             "voidtools.Everything.Lite",
-            "Google.GoogleDrive",
-            "Google.Chrome",
             "Spotify.Spotify"
             "PPSSPPTeam.PPSSPP",
             "Neovim.Neovim",
             "ShareX.ShareX",
-            "GIMP.GIMP",
             "Telegram.TelegramDesktop",
             "Microsoft.PowerToys"
         )
