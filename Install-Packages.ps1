@@ -29,7 +29,10 @@ process {
             "Neovim.Neovim",
             "ShareX.ShareX",
             "Telegram.TelegramDesktop",
-            "Microsoft.PowerToys"
+            "Microsoft.PowerToys",
+            "Ryochan7.DS4Windows",
+            "Corsair.iCUE.5",
+            "Intel.IntelDriverAndSupportAssistant"
         )
 
         foreach ($package in $PackagesList) {
