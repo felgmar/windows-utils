@@ -24,7 +24,7 @@ process {
             "voidtools.Everything.Lite",
             "Nextcloud.NextcloudDesktop",
             "Mozilla.Firefox",
-            "Spotify.Spotify"
+            "Spotify.Spotify",
             "PPSSPPTeam.PPSSPP",
             "Neovim.Neovim",
             "ShareX.ShareX",
