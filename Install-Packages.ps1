@@ -8,7 +8,7 @@ process {
     if (-not($Package))
     {
         $PackagesList = @(
-            "Bitwarden.Bitwarden",
+            "Bitwarden.Bitwarden", # Bitwarden
             "GitHub.GitHubDesktop",
             "GitHub.cli",
             "Git.Git",
@@ -18,13 +18,13 @@ process {
             "Microsoft.VisualStudio.2022.Community",
             "7zip.7zip",
             "Telegram.TelegramDesktop",
-            "Microsoft.VisualStudioCode",
+            "XP9KHM4BK9FZ7Q", # Visual Studio Code
             "ElectronicArts.EADesktop",
             "Klocman.BulkCrapUninstaller",
             "voidtools.Everything.Lite",
             "Nextcloud.NextcloudDesktop",
             "Mozilla.Firefox",
-            "Spotify.Spotify",
+            "9NCBCSZSJRSB", # Spotify
             "PPSSPPTeam.PPSSPP",
             "Neovim.Neovim",
             "ShareX.ShareX",
