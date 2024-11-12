@@ -1,13 +1,17 @@
 ﻿#
-# Created by Felipe González Martín (gfelipe099)
+# Created by Felipe González Martín (felgmar)
 # Chromium Update Tool
 # chromium-updater.ps1 file
 #
 
-${ScriptVersion} = "1.0.1"
+#requires -runasadministrator
+
+${scriptVersion} = "1.0.2"
 ${programName} = 'Chromium'
+${downloadUri} = 'https://download-chromium.appspot.com/dl/Win_x64?type=snapshots'
 ${zipFile} = 'chrome-win.zip'
-${installDir} = "$env:ProgramFiles\The Chromium Project"
+${installDir} = "$env:ProgramFiles\The Chromium Project\Chromium"
+${shortcutPath} = "$env:PUBLIC\Desktop"
 
 function deleteChromium
 {
@@ -17,7 +21,6 @@ function deleteChromium
         {
             Write-Host "Deleting ${programName}..." -ForegroundColor Red
             Remove-Item -LiteralPath "${installDir}" -Force -Recurse -Verbose -ErrorAction Stop | Out-Null
-            Start-Sleep 5
         }
         catch
         {
@@ -27,7 +30,6 @@ function deleteChromium
     else
     {
         Write-Error -Message "${programName} is not installed." -Category NotInstalled
-        Start-Sleep 5
     }
 
     if (Test-Path -Path "${env:USERPROFILE}\Desktop\Chromium.lnk")
@@ -45,7 +47,6 @@ function deleteChromium
     else
     {
         Write-Error -Message "Could not delete the desktop shortcut for ${programName}." -Category ResourceUnavailable
-        Start-Sleep 5
     }
 }
 
@@ -57,17 +58,15 @@ function downloadChromium
         {
             $null = Write-Progress "Downloading the latest Chromium win64 build..."
             $ProgressPreference = 'SilentlyContinue'
-            Invoke-WebRequest -Uri https://download-chromium.appspot.com/dl/Win_x64?type=snapshots -OutFile ${env:TEMP}\${zipFile} -UseBasicParsing -ErrorAction Stop | Out-Null
+            Invoke-WebRequest -Uri ${downloadUri} -OutFile ${env:TEMP}\${zipFile} -UseBasicParsing -ErrorAction Stop | Out-Null
             if (Test-Path -Path ${env:TEMP}\${zipFile} -PathType Leaf)
             {
                 Write-Host "${programName} was downloaded successfully to ${env:TEMP}\${zipFile}"
             }
-            Start-Sleep 5
         }
         catch
         {
             throw $_.Exception.Message
-            Start-Sleep 5
         }
     }
 
@@ -78,32 +77,18 @@ function downloadChromium
     else
     {
         Write-Host ":: The file ${zipFile} already exists."
-        $overwrite_file = Read-Host -Prompt "    Do you want to download it again?"
+        $overwrite_file = Read-Host -Prompt "Do you want to download it again?"
         Switch ($overwrite_file)
         {
-            'yes'
-            {
+            'yes' {
                 Write-Host ":: Deleting file ${env:TEMP}\${zipfile}..."
                 Remove-Item -LiteralPath "${env:TEMP}\${zipFile}" -Force
                 GetFile
-                Start-Sleep 5
             }
-            'y'
-            {
+            'y' {
                 Write-Host ":: Deleting file ${env:TEMP}\${zipfile}..."
                 Remove-Item -LiteralPath "${env:TEMP}\${zipFile}" -Force
                 GetFile
-                Start-Sleep 5
-            }
-            'no'
-            {
-                Write-Host ":: Operation cancelled"
-                Start-Sleep 5
-            }
-            'n'
-            {
-                Write-Host ":: Operation cancelled"
-                Start-Sleep 5
             }
         }
     }
@@ -113,17 +98,25 @@ function installChromium
 {
     if (-not(Test-Path -Path "${installDir}"))
     {
-        downloadChromium
-        Write-Host ":: Installing ${programName} to ${installDir}"
-        .\Unzip-File.ps1 -SourceFile "${env:TEMP}\${zipFile}" -DestinationPath "${installDir}"
-        Move-Item -Path "${installDir}\chrome-win\*" -Destination "${installDir}"
-        Remove-Item -Path "${installDir}\chrome-win"
+        try {
+            downloadChromium
+            Write-Host ":: Installing ${programName} to ${installDir}"
+            .\Unzip-File.ps1 -SourceFile "${env:TEMP}\${zipFile}" -DestinationPath "${installDir}"
+            Move-Item -Path "${installDir}\chrome-win\*" -Destination "${installDir}"
+            Remove-Item -Path "${installDir}\chrome-win"
+        } catch {
+            throw $_.Exception.Message
+        }
         try
         {
-            .\Create-Shortcut.ps1 -ProgramName ${programName} -ShortcutPath "${env:USERPROFILE}\Desktop\${programName}.lnk" -TargetPath "${installDir}\chrome.exe" -WorkingDirectory "${installDir}"
+            if (-not(Test-Path -LiteralPath ".\Create-Shortcut.ps1"))
+            {
+                Write-Error "Cannot create a shortcut." -Category ResourceUnavailable
+            }
+            .\Create-Shortcut.ps1 -ProgramName ${programName} -ShortcutPath "${shortcutPath}\Chromium.lnk" -TargetPath "${installDir}\chrome.exe" -WorkingDirectory "${installDir}"
 
             Write-Host "   ${programName} has been installed at ${installDir}"
-            Write-Host "   A shortcut of Chromium has been created at ${env:USERPROFILE}\Desktop\${programName}.lnk"
+            Write-Host "   A shortcut of Chromium has been created at ${shortcutPath}\Chromium.lnk"
             Start-Sleep 5
         }
         catch
