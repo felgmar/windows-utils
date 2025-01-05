@@ -5,13 +5,13 @@ param (
 )
 
 process {
-    $url = 'https://www.uwe-sieber.de/files'
-    $filenames = @('DriveCleanup.zip', 'DeviceCleanupCmd.zip')
+    [String]$url = 'https://www.uwe-sieber.de/files'
+    [Array]$filenames = @('DriveCleanup.zip', 'DeviceCleanupCmd.zip')
 
     try {
         $filenames.ForEach({
             [String]$file = "$url/$_"
-            [String]$file_no_extension = "$_".Replace(".zip", "")
+            [String]$file_no_extension = $_.Replace(".zip", "")
             
             if (Test-Path -LiteralPath "$env:SystemDrive\$file_no_extension.exe")
             {
