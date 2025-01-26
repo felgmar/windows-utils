@@ -12,6 +12,7 @@ process {
             "XP89DCGQ3K6VLD", # PowerToys
             "9NCBCSZSJRSB", # Spotify
             "XP9KHM4BK9FZ7Q" # VS Code
+            "9MZ1SNWT0N5D", # PowerShell
             "GitHub.GitHubDesktop",
             "GitHub.cli",
             "Git.Git",
