@@ -27,7 +27,6 @@ process {
         Start-Process -FilePath "git" -ArgumentList ('config', '--global', 'user.name', "$Name") -LoadUserProfile -NoNewWindow -Wait
         Start-Process -FilePath "git" -ArgumentList ('config', '--global', 'user.email', "$Email") -LoadUserProfile -NoNewWindow -Wait
         Start-Process -FilePath "git" -ArgumentList ('config', '--global', 'gpg.format', "$GPGFormat") -LoadUserProfile -NoNewWindow  -Wait
-        user.signingkey
     }
 
     if (Test-Path $SigningKey) {
