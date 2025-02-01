@@ -113,7 +113,7 @@ function installChromium
             {
                 Write-Error "Cannot create a shortcut." -Category ResourceUnavailable
             }
-            .\Create-Shortcut.ps1 -ProgramName ${programName} -ShortcutPath "${shortcutPath}\Chromium.lnk" -TargetPath "${installDir}\chrome.exe" -WorkingDirectory "${installDir}"
+            ".\Create-Shortcut.ps1" -ProgramName "${programName}" -ShortcutPath "${shortcutPath}\Chromium.lnk" -TargetPath "${installDir}\chrome.exe" -WorkingDirectory "${installDir}"
 
             Write-Host "   ${programName} has been installed at ${installDir}"
             Write-Host "   A shortcut of Chromium has been created at ${shortcutPath}\Chromium.lnk"
