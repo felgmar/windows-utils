@@ -29,7 +29,8 @@ process {
             "Neovim.Neovim",
             "ShareX.ShareX",
             "Corsair.iCUE.5",
-            "Intel.IntelDriverAndSupportAssistant"
+            "Intel.IntelDriverAndSupportAssistant",
+            "ONLYOFFICE.DesktopEditors"
         )
 
         foreach ($package in $PackagesList) {
