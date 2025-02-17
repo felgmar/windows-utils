@@ -21,7 +21,6 @@ process {
             "Valve.Steam",
             "Microsoft.VisualStudio.2022.Community",
             "7zip.7zip",
-            "Telegram.TelegramDesktop",
             "ElectronicArts.EADesktop",
             "RevoUninstaller.RevoUninstaller",
             "voidtools.Everything.Lite",
