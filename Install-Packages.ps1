@@ -32,10 +32,18 @@ process {
 
     if (-not($Package))
     {
-        foreach ($packageId in $PackagesList.Keys) {
+        $PackagesList.Keys | ForEach-Object {
+            $packageId = $_
             $packageName = $PackagesList[$packageId]
             Write-Host "Installing package: $packageName"
-            Start-Process -FilePath "winget.exe" -ArgumentList ("install", "--exact", "--id", $packageId) -NoNewWindow -Wait
+            Start-Process -FilePath "winget.exe" -ArgumentList (
+                "install",
+                "--exact",
+                "--id $packageId",
+                "--accept-source-agreements",
+                "--accept-package-agreements",
+                "--silent"
+            ) -NoNewWindow -Wait
         }
     } else {
         Write-Host "Installing package: $Package"
