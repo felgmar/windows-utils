@@ -27,7 +27,6 @@ process {
         "ShareX.ShareX" = "ShareX"
         "Corsair.iCUE.5" = "iCUE"
         "Intel.IntelDriverAndSupportAssistant" = "Intel Driver & Support Assistant"
-        "ONLYOFFICE.DesktopEditors" = "ONLYOFFICE Desktop Editors"
     }
 
     if (-not($Package))
