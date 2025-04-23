@@ -7,6 +7,7 @@ param (
 process {
     $PackagesList = @{
         "9PJSDV0VPK04" = "Bitwarden"
+        "XP8C9QZMS2PC1T" = "Brave"
         "XP89DCGQ3K6VLD" = "PowerToys"
         "9NCBCSZSJRSB" = "Spotify"
         "XP9KHM4BK9FZ7Q" = "Visual Studio Code"
