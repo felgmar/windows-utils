@@ -5,6 +5,15 @@ param (
 )
 
 process {
+    $Principal = [Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()
+    $IsAdministrator = $Principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+
+    if ($IsAdministrator)
+    {
+        Write-Error -Message "Do not run this script as a privileged user." -ErrorAction Stop
+        return
+    }
+
     $PackagesList = @{
         "9PJSDV0VPK04" = "Bitwarden"
         "XP8C9QZMS2PC1T" = "Brave"
@@ -47,6 +56,13 @@ process {
         }
     } else {
         Write-Host "Installing package: $Package"
-        Start-Process -FilePath "winget.exe" -ArgumentList ("install", "--exact", "--id", $Package) -NoNewWindow -Wait
+        Start-Process -FilePath "winget.exe" -ArgumentList (
+            "install",
+            "--exact",
+            "--id $packageId",
+            "--accept-source-agreements",
+            "--accept-package-agreements",
+            "--silent"
+        ) -NoNewWindow -Wait
     }
 }
