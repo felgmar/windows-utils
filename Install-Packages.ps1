@@ -24,6 +24,7 @@ process {
         "GitHub.GitHubDesktop" = "GitHub Desktop"
         "GitHub.cli" = "GitHub CLI"
         "Git.Git" = "Git"
+        "Guru3D.RTSS" = "RivaTuner Statistics Server"
         "JRSoftware.InnoSetup" = "Inno Setup"
         "PPSSPPTeam.PPSSPP" = "PPSSPP"
         "Valve.Steam" = "Steam"
