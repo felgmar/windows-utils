@@ -7,7 +7,7 @@ function Get-LatestRelease() {
         [Parameter(Mandatory=$true)]
         [String]$Repository,
 
-        [Parameter(Mandatory=$false, Default="$env:USERPROFILE\Downloads")]
+        [Parameter(Mandatory=$false)]
         [String]$DestinationPath,
 
         [Parameter(Mandatory=$true)]
@@ -17,6 +17,10 @@ function Get-LatestRelease() {
         [Switch]$Authenticated
     )
     process {
+        if (-not $DestinationPath) {
+            $DestinationPath = Join-Path -Path $env:USERPROFILE -ChildPath "Downloads"
+        }
+
         if ($Authenticated) {
             [String]$Command = "gh api --method GET /repos/$User/$Repository/releases/latest"
             [PSCustomObject]$ReleaseInfo = Invoke-Expression -Command $Command | ConvertFrom-Json
