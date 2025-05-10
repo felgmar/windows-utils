@@ -21,6 +21,11 @@ process {
             }
 
             Write-Host "Data Execution Prevention (DEP) has been successfully enabled." -ForegroundColor Green
+            Write-Warning -Message "For the changes to take effect you must reboot your computer."
+            $RebootComputer = Read-Host -Prompt "Do you want to reboot your computer now? <y/n> "
+            if ($RebootComputer -match '^y(es)?$') {
+                shutdown.exe /r /t 5
+            }
         }
     }
     catch {
