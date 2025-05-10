@@ -7,7 +7,7 @@ function Get-LatestRelease() {
         [Parameter(Mandatory=$true)]
         [String]$Repository,
 
-        [Parameter(Mandatory=$false)]
+        [Parameter(Mandatory=$false, Default="$env:USERPROFILE\Downloads")]
         [String]$DestinationPath,
 
         [Parameter(Mandatory=$true)]
