@@ -39,12 +39,7 @@ function Get-LatestRelease() {
                         {
                             if (-not(Test-Path -LiteralPath "$FilePath")) {
                                 Write-Host "Downloading $FileName to $FilePath..."
-                                if ($Debug) {
-                                    Write-Debug "Invoke-WebRequest -Uri $DownloadUrl -OutFile $FilePath"
-                                }
-                                else {
-                                    Write-Debug "Invoke-WebRequest -Uri $DownloadUrl -OutFile $FilePath"
-                                }
+                                Invoke-WebRequest -Uri $DownloadUrl -OutFile $FilePath
                             } else {
                                 Write-Warning -Message "File $FilePath already exists."
                             }
