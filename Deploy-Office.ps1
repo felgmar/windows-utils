@@ -1,19 +1,23 @@
 [CmdletBinding()]
 param(
     [Parameter(Mandatory=$false)]
-    [String]$ConfigurationFile
+    [String]$ConfigurationFile,
+    [Parameter(Mandatory=$true)]
+    [String]$ProductKey
 )
 
 process {
     function CreateXmlFile() {
         param(
             [Parameter(Mandatory=$true)]
-            [String]$DestinationPath
+            [String]$DestinationPath,
+            [Parameter(Mandatory=$true)]
+            [String]$PIDKEY
         )
         @"
 <Configuration ID="ce714996-a823-42f4-8150-3cbf8b2e709e">
   <Add OfficeClientEdition="64" Channel="PerpetualVL2024" MigrateArch="TRUE">
-    <Product ID="Standard2024Volume" PIDKEY="V28N4-JG22K-W66P8-VTMGK-H6HGR">
+    <Product ID="Standard2024Volume" PIDKEY="$PIDKEY">
       <Language ID="MatchOS" />
       <Language ID="MatchPreviousMSI" />
       <ExcludeApp ID="OneDrive" />
@@ -82,7 +86,7 @@ process {
     [String]$SetupBinary = Join-Path -Path "$Path" -ChildPath "$Filename"
 
     if (-not($ConfigurationFile)) {
-        CreateXmlFile -DestinationPath "$Path"
+        CreateXmlFile -DestinationPath "$Path" -PIDKEY $ProductKey
     }
 
     try {
