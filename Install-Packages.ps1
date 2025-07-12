@@ -38,6 +38,10 @@ process {
         "ShareX.ShareX" = "ShareX"
         "Corsair.iCUE.5" = "iCUE"
         "Intel.IntelDriverAndSupportAssistant" = "Intel Driver & Support Assistant"
+        "XP8K4RGX25G3GM" = "CrystalDiskInfo"
+        "Stenzek.DuckStation" = "DuckStation"
+        "PCSX2Team.PCSX2" = "PCSX2"
+        "Guru3D.Afterburner" = "MSI Afterburner"
     }
 
     if (-not($Package))
