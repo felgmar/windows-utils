@@ -13,14 +13,14 @@ process {
             }
 
             $PreviousState = $_
-            Write-Host "Changing Hypervisor launch type from $PreviousState to Auto..." -ForegroundColor Yellow
-            Start-Process -FilePath "bcdedit.exe" -ArgumentList ('/set', '{current}', 'hypervisorlaunchtype', "Auto") -NoNewWindow -Wait -PassThru
+            Write-Host "Changing hypervisor launch type from $PreviousState to off..." -ForegroundColor Yellow
+            Start-Process -FilePath "bcdedit.exe" -ArgumentList ('/set', '{current}', 'hypervisorlaunchtype', "off") -NoNewWindow -Wait -PassThru
 
             if ($LASTEXITCODE -ne 0) {
-                throw "Failed to enable Hypervisor launch type. Exit code: $LASTEXITCODE"
+                throw "Failed to disable hypervisor launch type. Exit code: $LASTEXITCODE"
             }
 
-            Write-Host "Hypervisor launch type has been successfully enabled." -ForegroundColor Green
+            Write-Host "Hypervisor launch type has been successfully disabled." -ForegroundColor Green
             Write-Warning -Message "For the changes to take effect you must reboot your computer."
             $RebootComputer = Read-Host -Prompt "Do you want to reboot your computer now? <y/n>"
             if ($RebootComputer -match '^y(es)?$') {
