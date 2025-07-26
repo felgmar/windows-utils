@@ -1,19 +1,19 @@
 function Get-LatestRelease() {
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [String]$User,
         
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [String]$Repository,
 
-        [Parameter(Mandatory=$false)]
+        [Parameter(Mandatory = $false)]
         [String]$DestinationPath,
 
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [String]$Platform,
 
-        [Parameter(Mandatory=$false)]
+        [Parameter(Mandatory = $false)]
         [Switch]$Authenticated
     )
     process {
@@ -24,10 +24,11 @@ function Get-LatestRelease() {
         if ($Authenticated) {
             [String]$Command = "gh api --method GET /repos/$User/$Repository/releases/latest"
             [PSCustomObject]$ReleaseInfo = Invoke-Expression -Command $Command | ConvertFrom-Json
-        } else {
+        }
+        else {
             [String]$URL = "https://api.github.com/repos/$User/$Repository/releases/latest"
             [String]$Command = Invoke-WebRequest -Uri $URL -UserAgent 'Mozilla/5.0'
-            [String]$ReleaseInfo = $Command | ConvertFrom-Json
+            [PSCustomObject]$ReleaseInfo = $Command | ConvertFrom-Json
         }
 
         [Array]$Assets = $ReleaseInfo.assets
@@ -37,31 +38,31 @@ function Get-LatestRelease() {
             [String]$FileExtension = [System.IO.Path]::GetExtension($FileName)
             [String]$FilePath = Join-Path -Path $DestinationPath -ChildPath $FileName
             try {
-                switch ($Platform) {
+                switch ($Platform.ToLower()) {
                     'linux' {
-                        if ($FileExtension -eq '.AppImage' -or $FileExtension -eq '.flatpak' -and $FileName.Contains('linux'))
-                        {
-                            if (-not(Test-Path -LiteralPath "$FilePath")) {
+                        if ($FileExtension -eq '.AppImage' -or $FileExtension -eq '.flatpak' -and $FileName.Contains('linux')) {
+                            if (-not(Test-Path -LiteralPath $FilePath)) {
                                 Write-Host "Downloading $FileName to $FilePath..."
                                 Invoke-WebRequest -Uri $DownloadUrl -OutFile $FilePath
-                            } else {
-                                Write-Warning -Message "File $FilePath already exists."
+                            }
+                            else {
+                                Write-Error -Message "File $FilePath already exists."
                             }
                         }
                     }
                     'windows' {
-                        if ($FileExtension -eq '.exe' -or $FileExtension -eq '.zip' -and $FileName.Contains('windows') -or $FileName.Contains('win'))
-                        {
+                        if ($FileExtension -eq '.exe' -and $FileName.Contains('windows') ) {
                             if (-not(Test-Path -LiteralPath $FilePath)) {
-                            Write-Host "Downloading $FileName to $FilePath..."
-                            Invoke-WebRequest -Uri $DownloadUrl -OutFile $FilePath
-                            } else {
+                                Write-Host "Downloading $FileName to $FilePath..."
+                                Invoke-WebRequest -Uri $DownloadUrl -OutFile $FilePath
+                            }
+                            else {
                                 Write-Warning -Message "File $FilePath already exists."
                             }
                         }
                     }
                     'mac' {
-                        throw "Not implemented."
+                        throw "macOS is not implemented."
                     }
                     Default {
                         throw "Unknown platform: $Platform"
@@ -86,9 +87,8 @@ $Repositories = @(
 foreach ($Platform in $Platforms) {
     foreach ($Repository in $Repositories) {
         Get-LatestRelease -DestinationPath "$env:USERPROFILE\Downloads" `
-                          -User $Repository.User `
-                          -Repository $Repository.Repo `
-                          -Authenticated `
-                          -Platform $Platform
+            -User $Repository.User `
+            -Repository $Repository.Repo `
+            -Platform $Platform
     }
 }
