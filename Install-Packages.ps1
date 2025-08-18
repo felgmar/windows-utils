@@ -41,7 +41,6 @@ process {
         "XP8K4RGX25G3GM" = "CrystalDiskInfo"
         "Stenzek.DuckStation" = "DuckStation"
         "PCSX2Team.PCSX2" = "PCSX2"
-        "Stenzek.DuckStation" = "DuckStation"
         "Guru3D.Afterburner" = "MSI Afterburner"
     }
 
