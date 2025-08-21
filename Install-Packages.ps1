@@ -21,6 +21,7 @@ process {
         "9NCBCSZSJRSB" = "Spotify"
         "XP9KHM4BK9FZ7Q" = "Visual Studio Code"
         "9MZ1SNWT0N5D" = "PowerShell"
+        "9NN77TCQ1NC8" = "Mp3tag"
         "GitHub.GitHubDesktop" = "GitHub Desktop"
         "GitHub.cli" = "GitHub CLI"
         "Git.Git" = "Git"
