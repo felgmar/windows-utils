@@ -12,7 +12,7 @@ process {
         $filenames.ForEach({
             [String]$file = "$url/$_"
             [String]$file_no_extension = $_.Replace(".zip", "")
-            
+
             if (Test-Path -LiteralPath "$env:SystemDrive\$file_no_extension.exe") {
                 Write-Error -Message "The file $file_no_extension.exe already exists in $env:SystemDrive\."
             } else {
