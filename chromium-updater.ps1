@@ -4,82 +4,72 @@
 # chromium-updater.ps1 file
 #
 
-#requires -runasadministrator
+${IsAdmin} = [bool](New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 
 ${scriptVersion} = "1.0.2"
 ${programName} = 'Chromium'
 ${downloadUri} = 'https://download-chromium.appspot.com/dl/Win_x64?type=snapshots'
 ${zipFile} = 'chrome-win.zip'
-${installDir} = "$env:ProgramFiles\The Chromium Project\Chromium"
-${shortcutPath} = "$env:PUBLIC\Desktop"
 
-function deleteChromium
-{
-    if (Test-Path -Path "${installDir}")
-    {
-        try
-        {
+if ($IsAdmin) {
+    ${installDir} = "$env:ProgramFiles\The Chromium Project\Chromium"
+    ${shortcutPath} = "$env:PUBLIC\Desktop"
+}
+else {
+    ${installDir} = "$env:LOCALAPPDATA\Programs\The Chromium Project\Chromium"
+    ${shortcutPath} = "$env:USERPROFILE\Desktop"
+}
+
+function deleteChromium {
+    if (Test-Path -Path "${installDir}") {
+        try {
             Write-Host "Deleting ${programName}..." -ForegroundColor Red
             Remove-Item -LiteralPath "${installDir}" -Force -Recurse -Verbose -ErrorAction Stop | Out-Null
         }
-        catch
-        {
+        catch {
             throw $_.Exception.Message
         }
     }
-    else
-    {
+    else {
         Write-Error -Message "${programName} is not installed." -Category NotInstalled
     }
 
-    if (Test-Path -Path "${env:USERPROFILE}\Desktop\Chromium.lnk")
-    {
-        try
-        {
+    if (Test-Path -Path "${env:USERPROFILE}\Desktop\Chromium.lnk") {
+        try {
             Write-Host "Deleting shortcut..."
             Remove-Item -LiteralPath "${env:USERPROFILE}\Desktop\Chromium.lnk" -Force -Verbose -ErrorAction Stop | Out-Null
         }
-        catch
-        {
+        catch {
             throw $_.Exception.Message
         }
     }
-    else
-    {
+    else {
         Write-Error -Message "Could not delete the desktop shortcut for ${programName}." -Category ResourceUnavailable
     }
 }
 
-function downloadChromium
-{
-    function GetFile
-    {
-        try
-        {
+function downloadChromium {
+    function GetFile {
+        try {
             $null = Write-Progress "Downloading the latest Chromium win64 build..."
             $ProgressPreference = 'SilentlyContinue'
             Invoke-WebRequest -Uri ${downloadUri} -OutFile ${env:TEMP}\${zipFile} -UseBasicParsing -ErrorAction Stop | Out-Null
-            if (Test-Path -Path ${env:TEMP}\${zipFile} -PathType Leaf)
-            {
+            if (Test-Path -Path ${env:TEMP}\${zipFile} -PathType Leaf) {
                 Write-Host "${programName} was downloaded successfully to ${env:TEMP}\${zipFile}"
             }
         }
-        catch
-        {
+        catch {
             throw $_.Exception.Message
         }
     }
 
-    if (-not(Test-Path -Path ${env:TEMP}\${zipFile}))
-    {
+    if (-not(Test-Path -Path ${env:TEMP}\${zipFile})) {
         GetFile
     }
-    else
-    {
+    else {
         Write-Host ":: The file ${zipFile} already exists."
         $overwrite_file = Read-Host -Prompt "Do you want to download it again?"
-        Switch ($overwrite_file)
-        {
+        Switch ($overwrite_file) {
             'yes' {
                 Write-Host ":: Deleting file ${env:TEMP}\${zipfile}..."
                 Remove-Item -LiteralPath "${env:TEMP}\${zipFile}" -Force
@@ -94,23 +84,20 @@ function downloadChromium
     }
 }
 
-function installChromium
-{
-    if (-not(Test-Path -Path "${installDir}"))
-    {
+function installChromium {
+    if (-not(Test-Path -Path "${installDir}")) {
         try {
             downloadChromium
             Write-Host ":: Installing ${programName} to ${installDir}"
             .\Unzip-File.ps1 -SourceFile "${env:TEMP}\${zipFile}" -DestinationPath "${installDir}"
             Move-Item -Path "${installDir}\chrome-win\*" -Destination "${installDir}"
             Remove-Item -Path "${installDir}\chrome-win"
-        } catch {
+        }
+        catch {
             throw $_.Exception.Message
         }
-        try
-        {
-            if (-not(Test-Path -LiteralPath ".\Create-Shortcut.ps1"))
-            {
+        try {
+            if (-not(Test-Path -LiteralPath ".\Create-Shortcut.ps1")) {
                 Write-Error "Cannot create a shortcut." -Category ResourceUnavailable
             }
             .\Create-Shortcut.ps1 -ProgramName "${programName}" -ShortcutPath "${shortcutPath}\Chromium.lnk" -TargetPath "${installDir}\chrome.exe" -WorkingDirectory "${installDir}"
@@ -119,21 +106,18 @@ function installChromium
             Write-Host "   A shortcut of Chromium has been created at ${shortcutPath}\Chromium.lnk"
             Start-Sleep 5
         }
-        catch
-        {
+        catch {
             $_.Exception.Message
         }
         Start-Sleep 5
     }
-    else
-    {
+    else {
         Write-Error "${programName} is already installed in the directory ${installDir}"
         Start-Sleep 5
     }
 }
 
-function showMenu
-{
+function showMenu {
     param
     (
         [string]$Title = "Chromium Updater - v$ScriptVersion"
@@ -148,24 +132,19 @@ function showMenu
     Write-Host "==========================================================="
 }
 
-do
-{
+do {
     Clear-Host
     showMenu
 
     $option = Read-Host ":: Please select an option"
-    Switch ($option)
-    {
-        '1'
-        {
+    Switch ($option) {
+        '1' {
             installChromium
         }
-        '2'
-        {
+        '2' {
             downloadChromium
         }
-        '3'
-        {
+        '3' {
             deleteChromium
         }
     }
