@@ -9,7 +9,7 @@ process {
         $BCDEntries | ForEach-Object {
             if ($_ -eq 'OptOut') {
                 Write-Warning -Message "Data Execution Prevention (DEP) is already set to $_."
-                return
+                exit 0
             }
 
             $PreviousState = $_
