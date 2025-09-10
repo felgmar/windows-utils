@@ -42,6 +42,7 @@ process {
         "Stenzek.DuckStation"                   = "DuckStation"
         "PCSX2Team.PCSX2"                       = "PCSX2"
         "Guru3D.Afterburner"                    = "MSI Afterburner"
+        "Google Drive"                          = "Google.GoogleDrive"
     }
 
     if (-not($Package)) {
