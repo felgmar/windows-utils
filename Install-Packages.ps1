@@ -34,7 +34,6 @@ process {
         "Valve.Steam"                           = "Steam"
         "Microsoft.VisualStudio.2022.Community" = "Visual Studio 2022"
         "7zip.7zip"                             = "7-Zip"
-        "ElectronicArts.EADesktop"              = "EA app"
         "RevoUninstaller.RevoUninstaller"       = "Revo Uninstaller"
         "voidtools.Everything.Lite"             = "Everything Lite"
         "Nextcloud.NextcloudDesktop"            = "Nextcloud"
