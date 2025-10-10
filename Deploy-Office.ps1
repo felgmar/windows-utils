@@ -10,11 +10,10 @@ process {
     function CreateXmlFile() {
         param(
             [Parameter(Mandatory=$true)]
-            [String]$DestinationPath,
-            [Parameter(Mandatory=$true)]
             [String]$PIDKEY
         )
-        @"
+
+        return @"
 <Configuration ID="ce714996-a823-42f4-8150-3cbf8b2e709e">
   <Add OfficeClientEdition="64" Channel="PerpetualVL2024" MigrateArch="TRUE">
     <Product ID="Standard2024Volume" PIDKEY="$PIDKEY">
@@ -36,7 +35,7 @@ process {
   <RemoveMSI />
   <Display Level="Full" AcceptEULA="TRUE" />
 </Configuration>
-"@ | Set-Content -Path (Join-Path -Path "$DestinationPath" -ChildPath "Configuration.xml")
+"@
     }
 
     function DownloadFile() {
@@ -62,14 +61,12 @@ process {
         if (Test-Path -Path "$OutputPath") {
             Write-Warning "$OutputPath already exists."
         } else {
-            New-Item -Path "$OutputPath" -ItemType "Directory" -WarningAction Stop -ErrorAction Stop
+            New-Item -Path "$OutputPath" -ItemType "Directory"
         }
 
         if (-not(Test-Path -LiteralPath "$OutFile")) {
             try {
-                Start-BitsTransfer -Source $URL `
-                    -Destination $OutFile `
-                    -DisplayName "Downloading $Filename..."
+                Invoke-WebRequest -Uri $URL -OutFile $OutFile
             }
             catch {
                 throw $_.Exception.Message
@@ -80,35 +77,41 @@ process {
         return $ERRORLEVEL
     }
 
-    [String]$Filename = "officedeploymenttool_18730-20142.exe"
+    [String]$Filename = "officedeploymenttool_19231-20072.exe"
     [String]$URL = "https://download.microsoft.com/download/6c1eeb25-cf8b-41d9-8d0d-cc1dbc032140/$Filename"
     [String]$Path = Join-Path -Path "$env:TEMP" -ChildPath "OfficeInstaller"
     [String]$SetupBinary = Join-Path -Path "$Path" -ChildPath "$Filename"
+    $ConfigurationFile = CreateXmlFile -PIDKEY "V28N4-JG22K-W66P8-VTMGK-H6HGR"
 
-    if (-not($ConfigurationFile)) {
-        CreateXmlFile -DestinationPath "$Path" -PIDKEY $ProductKey
+    [Boolean]$IsXmlFilePresent = Test-Path -Path (Join-Path -Path $Path -ChildPath "Configuration.xml")
+
+    if (-not(Test-Path -Path "$Path")) {
+        New-Item -Path "$Path" -Type Directory | Out-Null
+    }
+    
+
+    if (-not(Test-Path -LiteralPath "$Path\Configuration.xml")) {
+        Set-Content -Value $ConfigurationFile -Path "$Path\Configuration.xml" -Verbose
     }
 
     try {
-        DownloadFile -URL "$URL" -OutputPath "$Path" -Filename "$Filename"
+        DownloadFile -URL "$URL" -OutputPath "$Path" -Filename "$Filename" -Verbose
     } catch {
         throw $_.Exception
     }
 
     try {
+        Write-Host "Extracting the Office installer..."
         powershell.exe -Command "& {cd $Path; .\$Filename /extract:$Path /quiet /passive /log:$SetupBinary.log; cd ..}"
     } catch {
         throw $_.Exception
     }
 
     try {
-        if (-not((Join-Path -Path "$Path" -ChildPath "Office"))) {
-            powershell.exe -Command "& {cd $Path; .\setup.exe /download $ConfigurationFile; cd ..}"
-        } else {
-            Write-Warning "Office is already downloaded."
-        }
+        Write-Host "Downloading Office..."
+        powershell.exe -Command "& {cd $Path; .\setup.exe /download .\Configuration.xml; cd ..}"
     } catch {
-        throw $_.Exception.Message
+        throw $_.Exception
     }
 
     try {
@@ -116,10 +119,12 @@ process {
 
         switch -Wildcard ($InstallNow.ToLower()) {
             'y*' {
-                powershell.exe -Command "& {cd $Path; .\setup.exe /configure $ConfigurationFile; cd ..}"
+                Write-Host "Installing Office"
+                powershell.exe -Command "& {cd $Path; .\setup.exe /configure .\Configuration.xml; cd $PScriptRoot}"
             }
             'yes*' {
-                powershell.exe -Command "& {cd $Path; .\setup.exe /configure $ConfigurationFile; cd ..}"
+                Write-Host "Installing Office"
+                powershell.exe -Command "& {cd $Path; .\setup.exe /configure .\Configuration.xml; cd $PScriptRoot}"
             }
             Default {
                 Write-Host "Installation cancelled by the user."
@@ -127,6 +132,6 @@ process {
             }
         }
     } catch {
-        throw $_.Exception.Message
+        throw $_.Exception
     }
 }
