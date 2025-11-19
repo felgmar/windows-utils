@@ -41,6 +41,7 @@ process {
         "PCSX2Team.PCSX2"                       = "PCSX2"
         "Guru3D.Afterburner"                    = "MSI Afterburner"
         "Google.GoogleDrive"                    = "Google Drive"
+        "Microsoft.WindowsTerminal"             = "Windows Terminal"
     }
 
     if (-not($Package)) {
