@@ -42,6 +42,7 @@ process {
         "Guru3D.Afterburner"                   = "MSI Afterburner"
         "Google.GoogleDrive"                   = "Google Drive"
         "Microsoft.WindowsTerminal"            = "Windows Terminal"
+        "Python.PythonInstallManager"          = "Python Install Manager"
     }
 
     if (-not($Package)) {
