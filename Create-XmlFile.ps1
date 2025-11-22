@@ -7,7 +7,7 @@ param (
 )
 
 begin {
-    [XmlDocument]$ConfigurationFile = New-Object -TypeName xml
+    [xml]$ConfigurationFile = New-Object -TypeName xml
 
     if (-not($ConfigurationId)) {
         [Guid]$ConfigurationId = New-Guid
