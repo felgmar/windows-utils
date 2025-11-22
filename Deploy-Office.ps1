@@ -21,7 +21,7 @@ if (-not($IsConfigurationFilePresent)) {
 }
 
 try {
-    .\DownloadFile.ps1 -URL "$URL/$InstallerFileName" -OutputPath "$InstallerDir" -Filename "$InstallerFileName" -Verbose
+    .\Download-File.ps1 -URL "$URL/$InstallerFileName" -OutputPath "$InstallerDir" -Filename "$InstallerFileName" -Verbose
 }
 catch {
     throw $_.Exception
