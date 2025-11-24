@@ -7,9 +7,10 @@
 [String]$ConfigurationFile = Join-Path -Path "$InstallerDir" -ChildPath "Configuration.xml"
 
 [Boolean]$IsInstallerDirPresent = Test-Path -Path "$InstallerDir"
+[Boolean]$IsInstallerDirPresent = Test-Path -Path "$InstallerDir/$InstallerFileName"
 [Boolean]$IsConfigurationFilePresent = Test-Path -Path "$ConfigurationFile"
 
-[Guid]$ConfigurationId = [System.Guid]::NewGuid()
+[Guid]$ConfigurationId = ([System.GUID]::NewGuid()).Guid
 [String]$PidKey = "V28N4-JG22K-W66P8-VTMGK-H6HGR"
 
 if (-not($IsInstallerDirPresent)) {
@@ -17,30 +18,39 @@ if (-not($IsInstallerDirPresent)) {
 }   
 
 if (-not($IsConfigurationFilePresent)) {
-    .\Create-XmlFile.ps1 -ConfigurationId "$ConfigurationId" -PIDKEY "$PidKey"
+    try {
+        .\Create-XmlFile.ps1 -ConfigurationId "$ConfigurationId" -PIDKEY "$PidKey" | Out-File $ConfigurationFile
+    }
+    catch {
+        throw $_.Exception
+    }
 }
 
-try {
-    .\Download-File.ps1 -URL "$URL/$InstallerFileName" -OutputPath "$InstallerDir" -Filename "$InstallerFileName" -Verbose
+if (-not(Test-Path -LiteralPath "$InstallerDir/$InstallerFileName")) {
+    try {
+        .\Download-File.ps1 -URL "$URL/$InstallerFileName" -OutputPath "$InstallerDir" -Filename "$InstallerFileName" -Verbose
+    }
+    catch {
+        throw $_.Exception
+    }
 }
-catch {
-    throw $_.Exception
-}
+
+cd "$InstallerDir"
 
 try {
     Write-Host "Extracting the Office installer..."
-    powershell.exe -Command "& {cd $InstallerDir; .\$SetupFile /extract:$InstallerDir /quiet /passive /log:$InstallerFileName.log; cd ..}"
+    Start-Process -FilePath "$SetupFile" -ArgumentList ("/extract:$InstallerDir", "/quiet", "/passive", "/log:$InstallerFileName.log")
 }
 catch {
-    throw $_.Exception
+    throw $_
 }
 
 try {
     Write-Host "Downloading Office..."
-    powershell.exe -Command "& {cd $InstallerDir; .\setup.exe /download .\$ConfigurationFile; cd ..}"
+    Start-Process -FilePath "setup.exe" -ArgumentList ("/download", "$ConfigurationFile", "/log:$InstallerFileName_download.log")
 }
 catch {
-    throw $_.Exception
+    throw $_
 }
 
 try {
@@ -49,11 +59,11 @@ try {
     switch -Wildcard ($InstallNow.ToLower()) {
         'y*' {
             Write-Host "Installing Office..."
-            powershell.exe -Command "& {cd $InstallerDir; .\setup.exe /configure .\$ConfigurationFile; cd $PScriptRoot}"
+            Start-Process -FilePath "setup.exe" ("/configure", "$ConfigurationFile", "/log:$InstallerFileName_installation.log")
         }
         'yes*' {
             Write-Host "Installing Office..."
-            powershell.exe -Command "& {cd $InstallerDir; .\setup.exe /configure .\$ConfigurationFile; cd $PScriptRoot}"
+            Start-Process -FilePath "setup.exe" ("/configure", "$ConfigurationFile", "/log:$InstallerFileName_installation.log")
         }
         Default {
             Write-Host "Installation cancelled by the user."
@@ -62,5 +72,7 @@ try {
     }
 }
 catch {
-    throw $_.Exception
+    throw $_
 }
+
+cd $PSScriptRoot
