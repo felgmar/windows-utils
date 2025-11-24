@@ -7,8 +7,6 @@ param (
 )
 
 begin {
-    [xml]$ConfigurationFile = New-Object -TypeName xml
-
     if (-not($ConfigurationId)) {
         [Guid]$ConfigurationId = New-Guid
     }
@@ -19,7 +17,7 @@ begin {
 }
 
 process {
-    $ConfigurationFile = @"
+    [String]$ConfigurationFile = @"
 <Configuration ID="$ConfigurationId">
 <Add OfficeClientEdition="64" Channel="PerpetualVL2024" MigrateArch="TRUE">
 <Product ID="Standard2024Volume" PIDKEY="$PIDKEY">
