@@ -4,10 +4,12 @@ param (
     [String]$Package
 )
 
-process {
+begin {
     $Principal = [Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()
     $IsAdministrator = $Principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+}
 
+process {
     if ($IsAdministrator) {
         Write-Error -Message "Do not run this script as a privileged user." -ErrorAction Stop
         return
@@ -47,17 +49,24 @@ process {
 
     if (-not($Package)) {
         $PackagesList.Keys | ForEach-Object {
-            $packageId = $_
-            $packageName = $PackagesList[$packageId]
-            Write-Host "Installing package: $packageName"
-            Start-Process -FilePath "winget.exe" -ArgumentList (
-                "install",
-                "--exact",
-                "--id $packageId",
-                "--accept-source-agreements",
-                "--accept-package-agreements",
-                "--silent"
-            ) -NoNewWindow -Wait
+            $PackageId = $_
+            $PackageName = $PackagesList[$packageId]
+
+            Write-Host "Installing package: $PackageName"
+
+            try {
+                Start-Process -FilePath "winget.exe" -ArgumentList (
+                    "install",
+                    "--exact",
+                    "--id $PackageId",
+                    "--accept-source-agreements",
+                    "--accept-package-agreements",
+                    "--silent"
+                ) -NoNewWindow -Wait
+            }
+            catch {
+                throw $_.Message
+            }
         }
     }
     else {
