@@ -1,3 +1,5 @@
+#requires -runasadministrator
+
 [String]$URL = "https://download.microsoft.com/download/6c1eeb25-cf8b-41d9-8d0d-cc1dbc032140"
 
 [String]$InstallerDir = Join-Path -Path "$env:TEMP" -ChildPath "OfficeInstaller"
@@ -7,7 +9,7 @@
 [String]$ConfigurationFile = Join-Path -Path "$InstallerDir" -ChildPath "Configuration.xml"
 
 [Boolean]$IsInstallerDirPresent = Test-Path -Path "$InstallerDir"
-[Boolean]$IsInstallerDirPresent = Test-Path -Path "$InstallerDir/$InstallerFileName"
+[Boolean]$IsInstallerPresent = Test-Path -Path "$InstallerDir/$InstallerFileName"
 [Boolean]$IsConfigurationFilePresent = Test-Path -Path "$ConfigurationFile"
 
 [Guid]$ConfigurationId = ([System.GUID]::NewGuid()).Guid
@@ -22,24 +24,29 @@ if (-not($IsConfigurationFilePresent)) {
         .\Create-XmlFile.ps1 -ConfigurationId "$ConfigurationId" -PIDKEY "$PidKey" | Out-File $ConfigurationFile
     }
     catch {
-        throw $_.Exception
+        throw $_
     }
 }
 
-if (-not(Test-Path -LiteralPath "$InstallerDir/$InstallerFileName")) {
+if (-not($IsInstallerPresent)) {
     try {
         .\Download-File.ps1 -URL "$URL/$InstallerFileName" -OutputPath "$InstallerDir" -Filename "$InstallerFileName" -Verbose
     }
     catch {
-        throw $_.Exception
+        throw $_
     }
 }
 
-cd "$InstallerDir"
+try {
+    Set-Location -Path "$InstallerDir"
+}
+catch {
+    throw $_
+}
 
 try {
     Write-Host "Extracting the Office installer..."
-    Start-Process -FilePath "$SetupFile" -ArgumentList ("/extract:$InstallerDir", "/quiet", "/passive", "/log:$InstallerFileName.log")
+    Start-Process -FilePath "$SetupFile" -ArgumentList ("/extract:$InstallerDir", "/quiet", "/passive", "/log:$InstallerFileName.log") -Wait
 }
 catch {
     throw $_
@@ -47,32 +54,28 @@ catch {
 
 try {
     Write-Host "Downloading Office..."
-    Start-Process -FilePath "setup.exe" -ArgumentList ("/download", "$ConfigurationFile", "/log:$InstallerFileName_download.log")
+    Start-Process -FilePath "setup.exe" -ArgumentList ("/download", "$ConfigurationFile", "/log:$InstallerFileName_download.log") -Wait
 }
 catch {
     throw $_
+}
+
+$InstallNow = Read-Host "Do you want to install it now? [Y/N]"
+
+switch -Wildcard ($InstallNow.ToLower()) {
+    'y*' {
+        Write-Host "Installing Office..."
+        Start-Process -FilePath "setup.exe" -ArgumentList ("/configure", "$ConfigurationFile", "/log:$InstallerFileName_installation.log") -Wait
+    }
+    Default {
+        Write-Host "Installation cancelled by the user."
+        return
+    }
 }
 
 try {
-    $InstallNow = Read-Host "Do you want to install it now? [Y/N]"
-
-    switch -Wildcard ($InstallNow.ToLower()) {
-        'y*' {
-            Write-Host "Installing Office..."
-            Start-Process -FilePath "setup.exe" ("/configure", "$ConfigurationFile", "/log:$InstallerFileName_installation.log")
-        }
-        'yes*' {
-            Write-Host "Installing Office..."
-            Start-Process -FilePath "setup.exe" ("/configure", "$ConfigurationFile", "/log:$InstallerFileName_installation.log")
-        }
-        Default {
-            Write-Host "Installation cancelled by the user."
-            return
-        }
-    }
+    Set-Location -Path $PSScriptRoot
 }
 catch {
     throw $_
 }
-
-cd $PSScriptRoot
