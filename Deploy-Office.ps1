@@ -44,16 +44,16 @@ catch {
     throw $_
 }
 
+Write-Host "Extracting the Office installer..."
 try {
-    Write-Host "Extracting the Office installer..."
     Start-Process -FilePath "$SetupFile" -ArgumentList ("/extract:$InstallerDir", "/quiet", "/passive", "/log:$InstallerFileName.log") -Wait
 }
 catch {
     throw $_
 }
 
+Write-Host "Downloading Office..."
 try {
-    Write-Host "Downloading Office..."
     Start-Process -FilePath "setup.exe" -ArgumentList ("/download", "$ConfigurationFile", "/log:$InstallerFileName_download.log") -Wait
 }
 catch {
@@ -65,7 +65,12 @@ $InstallNow = Read-Host "Do you want to install it now? [Y/N]"
 switch -Wildcard ($InstallNow.ToLower()) {
     'y*' {
         Write-Host "Installing Office..."
-        Start-Process -FilePath "setup.exe" -ArgumentList ("/configure", "$ConfigurationFile", "/log:$InstallerFileName_installation.log") -Wait
+        try {
+            Start-Process -FilePath "setup.exe" -ArgumentList ("/configure", "$ConfigurationFile", "/log:$InstallerFileName_installation.log") -Wait
+        }
+        catch {
+            throw $_
+        }
     }
     Default {
         Write-Host "Installation cancelled by the user."
