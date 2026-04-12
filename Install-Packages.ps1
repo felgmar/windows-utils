@@ -15,7 +15,6 @@ $PackagesList = @{
     "9PKTQ5699M62"                         = "iCloud"
     "9NP83LWLPZ9K"                         = "Apple Devices"
     "9PFHDD62MXS1"                         = "Apple Music"
-    "XP8K4RGX25G3GM"                       = "CrystalDiskInfo"
     "XPDCFJDKLZJLP8"                       = "Visual Studio"
     "GitHub.GitHubDesktop"                 = "GitHub Desktop"
     "Git.Git"                              = "Git"
@@ -33,8 +32,6 @@ $PackagesList = @{
     "PCSX2Team.PCSX2"                      = "PCSX2"
     "Guru3D.Afterburner"                   = "MSI Afterburner"
     "Google.GoogleDrive"                   = "Google Drive"
-    "Microsoft.WindowsTerminal"            = "Windows Terminal"
-    "Python.PythonInstallManager"          = "Python Install Manager"
 }
 
 if (-not($Package)) {
