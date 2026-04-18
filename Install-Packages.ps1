@@ -16,6 +16,7 @@ $PackagesList = @{
     "9NP83LWLPZ9K"                         = "Apple Devices"
     "9PFHDD62MXS1"                         = "Apple Music"
     "XPDCFJDKLZJLP8"                       = "Visual Studio"
+    "XPDDT99J9GKB5C"                       = "Samsung Magician"
     "GitHub.GitHubDesktop"                 = "GitHub Desktop"
     "Git.Git"                              = "Git"
     "JRSoftware.InnoSetup"                 = "Inno Setup"
