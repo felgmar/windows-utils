@@ -1,21 +1,15 @@
-﻿[CmdletBinding()]
-param (
-   [Parameter(Mandatory = $false)]
-   [String]$DestinationPath
-)
+﻿[String]$url = 'https://www.uwe-sieber.de/files'
+[Array]$filenames = @('DriveCleanup.zip', 'DeviceCleanupCmd.zip')
 
-process {
-    [String]$url = 'https://www.uwe-sieber.de/files'
-    [Array]$filenames = @('DriveCleanup.zip', 'DeviceCleanupCmd.zip')
-
-    try {
-        $filenames.ForEach({
+try {
+    $filenames.ForEach({
             [String]$file = "$url/$_"
             [String]$file_no_extension = $_.Replace(".zip", "")
 
             if (Test-Path -LiteralPath "$env:SystemDrive\$file_no_extension.exe") {
                 Write-Error -Message "The file $file_no_extension.exe already exists in $env:SystemDrive\."
-            } else {
+            }
+            else {
                 Write-Host "Downloading file $file..."
                 Invoke-WebRequest -Uri "$file" -OutFile "$env:SystemDrive\$_" -ErrorAction Stop
 
@@ -39,8 +33,7 @@ process {
                 Remove-Item -Path "$env:SystemDrive\$_"
             }
         })
-    }
-    catch {
-        Write-Error -Message $_.Exception.Message -Exception $_.Exception -Category $_.CategoryInfo.Category
-    }
+}
+catch {
+    throw $_
 }
