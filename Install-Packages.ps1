@@ -9,13 +9,11 @@ if ($IsAdministrator) {
 $PackagesList = @{
     "9PJSDV0VPK04"                         = "Bitwarden"
     "XP89DCGQ3K6VLD"                       = "PowerToys"
-    "XP9KHM4BK9FZ7Q"                       = "Visual Studio Code"
     "9MZ1SNWT0N5D"                         = "PowerShell"
     "9NN77TCQ1NC8"                         = "Mp3tag"
     "9PKTQ5699M62"                         = "iCloud"
     "9NP83LWLPZ9K"                         = "Apple Devices"
     "9PFHDD62MXS1"                         = "Apple Music"
-    "XPDCFJDKLZJLP8"                       = "Visual Studio"
     "XPDDT99J9GKB5C"                       = "Samsung Magician"
     "GitHub.GitHubDesktop"                 = "GitHub Desktop"
     "Git.Git"                              = "Git"
@@ -25,7 +23,6 @@ $PackagesList = @{
     "7zip.7zip"                            = "7-Zip"
     "RevoUninstaller.RevoUninstaller"      = "Revo Uninstaller"
     "voidtools.Everything.Lite"            = "Everything Lite"
-    "Neovim.Neovim"                        = "Neovim"
     "ShareX.ShareX"                        = "ShareX"
     "Corsair.iCUE.5"                       = "iCUE"
     "Intel.IntelDriverAndSupportAssistant" = "Intel Driver & Support Assistant"
@@ -33,6 +30,7 @@ $PackagesList = @{
     "PCSX2Team.PCSX2"                      = "PCSX2"
     "Guru3D.Afterburner"                   = "MSI Afterburner"
     "Google.GoogleDrive"                   = "Google Drive"
+    "ZedIndustries.Zed"                    = "Zed"
 }
 
 try {
