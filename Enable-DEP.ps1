@@ -1,7 +1,7 @@
 #requires -RunAsAdministrator
 
 process {
-    $BCDEntries = (bcdedit /enum | Select-String -Pattern 'nx') | ForEach-Object {
+    $BCDEntries = (Get-BcdEntry | Select-String -Pattern 'nx') | ForEach-Object {
         $_.ToString().Trim() -replace ('nx\s+(\w+)', '$1')
     }
 
