@@ -7,47 +7,37 @@ if ($IsAdministrator) {
 }
 
 $PackagesList = @{
-    "9PJSDV0VPK04"                         = "Bitwarden"
-    "XP89DCGQ3K6VLD"                       = "PowerToys"
-    "9MZ1SNWT0N5D"                         = "PowerShell"
-    "9NN77TCQ1NC8"                         = "Mp3tag"
-    "9PKTQ5699M62"                         = "iCloud"
-    "9NP83LWLPZ9K"                         = "Apple Devices"
-    "9PFHDD62MXS1"                         = "Apple Music"
-    "XPDDT99J9GKB5C"                       = "Samsung Magician"
-    "GitHub.GitHubDesktop"                 = "GitHub Desktop"
-    "Git.Git"                              = "Git"
-    "JRSoftware.InnoSetup"                 = "Inno Setup"
-    "PPSSPPTeam.PPSSPP"                    = "PPSSPP"
-    "Valve.Steam"                          = "Steam"
-    "7zip.7zip"                            = "7-Zip"
-    "RevoUninstaller.RevoUninstaller"      = "Revo Uninstaller"
-    "voidtools.Everything.Lite"            = "Everything Lite"
-    "ShareX.ShareX"                        = "ShareX"
-    "Corsair.iCUE.5"                       = "iCUE"
-    "Intel.IntelDriverAndSupportAssistant" = "Intel Driver & Support Assistant"
-    "Stenzek.DuckStation"                  = "DuckStation"
-    "PCSX2Team.PCSX2"                      = "PCSX2"
-    "Guru3D.Afterburner"                   = "MSI Afterburner"
-    "Google.GoogleDrive"                   = "Google Drive"
-    "ZedIndustries.Zed"                    = "Zed"
+    "9PJSDV0VPK04"                    = "Bitwarden"
+    "XP89DCGQ3K6VLD"                  = "PowerToys"
+    "9MZ1SNWT0N5D"                    = "PowerShell"
+    "9NN77TCQ1NC8"                    = "Mp3tag"
+    "9PKTQ5699M62"                    = "iCloud"
+    "9NP83LWLPZ9K"                    = "Apple Devices"
+    "9PFHDD62MXS1"                    = "Apple Music"
+    "XPDDT99J9GKB5C"                  = "Samsung Magician"
+    "GitHub.GitHubDesktop"            = "GitHub Desktop"
+    "Git.Git"                         = "Git"
+    "JRSoftware.InnoSetup"            = "Inno Setup"
+    "PPSSPPTeam.PPSSPP"               = "PPSSPP"
+    "Valve.Steam"                     = "Steam"
+    "7zip.7zip"                       = "7-Zip"
+    "RevoUninstaller.RevoUninstaller" = "Revo Uninstaller"
+    "voidtools.Everything.Lite"       = "Everything Lite"
+    "ShareX.ShareX"                   = "ShareX"
+    "Corsair.iCUE.5"                  = "iCUE"
+    "Stenzek.DuckStation"             = "DuckStation"
+    "PCSX2Team.PCSX2"                 = "PCSX2"
+    "Guru3D.Afterburner"              = "MSI Afterburner"
+    "Google.GoogleDrive"              = "Google Drive"
 }
 
 try {
-    $PackagesList.Keys | ForEach-Object {
-        $PackageId = $_
-        $PackageName = $PackagesList[$_]
-
-        Write-Host "Installing $PackageName..."
-        Start-Process -FilePath "winget.exe" -ArgumentList (
-            "install",
-            "--exact",
-            "--id",
-            $PackageId,
-            "--accept-source-agreements",
-            "--accept-package-agreements",
-            "--silent"
-        ) -NoNewWindow -Wait
+    foreach ($package in $PackagesList.GetEnumerator()) {
+        Write-Host "Installing $($package.Value)..."
+        winget install --exact --id $($package.Key) `
+            --accept-source-agreements `
+            --accept-package-agreements `
+            --silent
     }
 }
 catch {
