@@ -29,6 +29,7 @@ $PackagesList = @{
     "PCSX2Team.PCSX2"                 = "PCSX2"
     "Guru3D.Afterburner"              = "MSI Afterburner"
     "Google.GoogleDrive"              = "Google Drive"
+    "Autofirma"                       = "SpanishGovernment.Autofirma"
 }
 
 try {
