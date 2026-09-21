@@ -23,8 +23,6 @@ $PackagesList = @{
     "RevoUninstaller.RevoUninstaller" = "Revo Uninstaller"
     "voidtools.Everything.Lite"       = "Everything Lite"
     "Corsair.iCUE.5"                  = "Corsair iCUE5 Software"
-    "Stenzek.DuckStation"             = "DuckStation"
-    "PCSX2Team.PCSX2"                 = "PCSX2"
     "Guru3D.Afterburner"              = "MSI Afterburner"
     "Google.GoogleDrive"              = "Google Drive"
 }
