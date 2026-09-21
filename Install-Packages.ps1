@@ -22,7 +22,6 @@ $PackagesList = @{
     "7zip.7zip"                       = "7-Zip"
     "RevoUninstaller.RevoUninstaller" = "Revo Uninstaller"
     "voidtools.Everything.Lite"       = "Everything Lite"
-    "ShareX.ShareX"                   = "ShareX"
     "Corsair.iCUE.5"                  = "Corsair iCUE5 Software"
     "Stenzek.DuckStation"             = "DuckStation"
     "PCSX2Team.PCSX2"                 = "PCSX2"
