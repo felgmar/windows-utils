@@ -101,7 +101,7 @@ function Install-Chromium {
         try {
             Get-Chromium
             Write-Host ":: Installing $ProgramName to $InstallDir"
-            .\Unzip-File.ps1 -SourceFile "${env:TEMP}\$ZipFile" -DestinationPath "$InstallDir"
+            Expand-Archive -Path "${env:TEMP}\$ZipFile" -DestinationPath "$InstallDir"
             Move-Item -Path "$InstallDir\chrome-win\*" -Destination "$InstallDir"
             Remove-Item -Path "$InstallDir\chrome-win"
         }
