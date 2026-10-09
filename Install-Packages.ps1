@@ -17,7 +17,6 @@ $PackagesList = @{
     "XPDDT99J9GKB5C"                  = "Samsung Magician"
     "Git.Git"                         = "Git"
     "JRSoftware.InnoSetup"            = "Inno Setup"
-    "PPSSPPTeam.PPSSPP"               = "PPSSPP"
     "Valve.Steam"                     = "Steam"
     "7zip.7zip"                       = "7-Zip"
     "RevoUninstaller.RevoUninstaller" = "Revo Uninstaller"
