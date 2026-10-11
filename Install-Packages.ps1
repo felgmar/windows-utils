@@ -28,8 +28,8 @@ $PackagesList = @{
 
 try {
     foreach ($package in $PackagesList.GetEnumerator()) {
-        Write-Host "Installing $($package.Value)..."
-        winget install --exact --id $($package.Key) `
+        Write-Host "Installing $package.Value..."
+        winget install --exact --id $package.Key `
             --accept-source-agreements `
             --accept-package-agreements `
             --silent
