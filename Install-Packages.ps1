@@ -8,7 +8,6 @@ if ($IsAdministrator) {
 
 $PackagesList = @{
     "9PJSDV0VPK04"                    = "Bitwarden"
-    "XP89DCGQ3K6VLD"                  = "PowerToys"
     "9MZ1SNWT0N5D"                    = "PowerShell"
     "9NN77TCQ1NC8"                    = "Mp3tag"
     "9PKTQ5699M62"                    = "iCloud"
@@ -21,7 +20,6 @@ $PackagesList = @{
     "7zip.7zip"                       = "7-Zip"
     "RevoUninstaller.RevoUninstaller" = "Revo Uninstaller"
     "voidtools.Everything.Lite"       = "Everything Lite"
-    "Corsair.iCUE.5"                  = "Corsair iCUE5 Software"
     "Guru3D.Afterburner"              = "MSI Afterburner"
     "Google.GoogleDrive"              = "Google Drive"
 }
